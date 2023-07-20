@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./css/main.css";
+import {  Routes , Route } from 'react-router-dom';
+import Todos from "./components/Todos";
+import { motion } from "framer-motion";
+import Navbar from "./components/Navbar";
+import Show from "./components/Show";
+import {  useState } from "react";
 function App() {
+  const [search,setSearch] = useState("")
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar onSearch={(value)=>{setSearch(value)}}/>
+      
+      <motion.div
+        initial={{ y: 1000 }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", duration: 1 }}
+      >
+      <Routes>
+          <Route path="/" element={<Todos title="Add Todos" /> } />
+          <Route path="completed" element={<Show search={search} sort="completed" title="Completed Todos"/>} />
+          <Route path="active" element={<Show search={search} sort="active" title="Active Todos" />} />
+          <Route path="all" element={<Show search={search} sort="all"title="All Todos"/>} />
+      </Routes>
+      </motion.div>
     </div>
   );
 }
